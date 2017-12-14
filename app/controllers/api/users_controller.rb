@@ -1,11 +1,11 @@
-class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+class Api::UsersController < ApiController
+  before_action :authenticated?
 
   # GET /users
   def index
     @users = User.all
 
-    render json: @users
+    render json: @users, each_serializer: UserSerializer
   end
 
   # GET /users/1
