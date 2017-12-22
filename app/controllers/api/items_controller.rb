@@ -15,10 +15,11 @@ class Api::ItemsController < ApiController
 
   # POST /items
   def create
+    params.require(:item).require(:text)
     @item = Item.new(item_params)
 
     if @item.save
-      render json: @item, status: :created, location: @item
+      render json: @item, status: :created
     else
       render json: @item.errors, status: :unprocessable_entity
     end
@@ -26,6 +27,7 @@ class Api::ItemsController < ApiController
 
   # PATCH/PUT /items/1
   def update
+    @item = Item.find(params[:id])
     if @item.update(item_params)
       render json: @item
     else
@@ -46,7 +48,6 @@ class Api::ItemsController < ApiController
 
     # Only allow a trusted parameter "white list" through.
     def item_params
-      params.require(:item).require(:text)
-      return { text: params[:item][:text], list_id: params[:list_id]}
+      return { text: params[:item][:text], list_id: params[:list_id], complete: params[:item][:complete]}
     end
 end

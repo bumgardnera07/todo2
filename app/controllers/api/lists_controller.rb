@@ -15,10 +15,11 @@ class Api::ListsController < ApiController
 
   # POST /lists
   def create
+    params.require(:list).require(:name)
     @list = List.new(list_params)
     
     if @list.save
-      render json: @list, status: :created, location: @list
+      render json: @list, status: :created
     else
       render json: @list.errors, status: :unprocessable_entity
     end
@@ -26,6 +27,7 @@ class Api::ListsController < ApiController
 
   # PATCH/PUT /lists/1
   def update
+    @list = List.find(params[:id])
     if @list.update(list_params)
       render json: @list
     else
@@ -52,7 +54,6 @@ class Api::ListsController < ApiController
 
     # Only allow a trusted parameter "white list" through.
     def list_params
-      params.require(:list).require(:name)
-      return { permissions: params[:list][:permissions], name: params[:list][:name], user_id: params[:user_id]}
+      return { permissions: params[:list][:permissions], name: params[:list][:name], user_id: params[:user_id], private: params[:list][:private]}
     end
 end
