@@ -1,5 +1,5 @@
-class ListsController < ApplicationController
-  before_action :set_list, only: [:show, :update, :destroy]
+class Api::ListsController < ApiController
+  before_action :authenticated?
 
   # GET /lists
   def index
@@ -16,7 +16,7 @@ class ListsController < ApplicationController
   # POST /lists
   def create
     @list = List.new(list_params)
-
+    
     if @list.save
       render json: @list, status: :created, location: @list
     else
@@ -46,6 +46,7 @@ class ListsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def list_params
-      params.require(:list).permit(:private)
+      params.require(:list).require(:name)
+      return { permissions: params[:list][:permissions], name: params[:list][:name], user_id: params[:user_id]}
     end
 end

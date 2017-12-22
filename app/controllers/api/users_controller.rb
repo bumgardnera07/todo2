@@ -20,7 +20,7 @@ class Api::UsersController < ApiController
     if @user.save
       render json: @user, status: :created, location: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: { errors: @user.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
@@ -46,6 +46,8 @@ class Api::UsersController < ApiController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:name, :email)
+      params.require(:user).require(:username) 
+      params.require(:user).require(:password)
+      params.require(:user).permit(:username, :password)
     end
 end
