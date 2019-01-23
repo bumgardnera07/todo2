@@ -1,24 +1,7 @@
-# README
+Create a user in the terminal with: curl -u username:password -d "user[username]={username}" -d "user[password]={password}" http://localhost:3000/api/users/
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Create a list with: curl -u username:password -d "list[name]={list name}" -d "list[permissions]={list access}" http://localhost:3000/api/users/1/lists
 
-Things you may want to cover:
+Note:Lists are serialized when created.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Add a task to a list with: curl -u username:password -d "item[description]={task}" http://localhost:3000/api/lists/{list serial#}/items
